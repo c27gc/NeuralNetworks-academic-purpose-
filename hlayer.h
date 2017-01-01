@@ -8,19 +8,26 @@ class HLayerClass
 {
 	public:
 		HLayerClass();
-		HLayerClass(int a, int b);
+		HLayerClass(int a, int b, float *d, float *e);
 		~HLayerClass();
+		void setNumberOfNeurons(int a);
 		void createNeurons();
-		void informationSpread();
-		void getOutputs(float *c);
-		void setWeights(float *d);
-		void getWeights(float *e);
+		void setLInputsNumbers(int b);
+		void setLInputsValues(float *d);
+		void setLBiasWeightsValues(float *k);
+		void getLBiasWeightsValues(float *k);
+		void setLWeightsValues(float *e);
+		void getLWeightsValues(float *e);
+		void lInformationSpread();
+		void getLOutputsValues(float *c);
+		int getLOutputsNumber();
 	private:
+		int numberofneurons;
 		NeuronClass *neuron;
-		numberofneurons;
-		numberofinputs;
-		float *inputvectorPtr;
-		float arrayofweights[numberofneurons][numberofinputs];
-		float *outputvectorPtr;
-}
+		int inputslnumbers;
+		float *inputlvectorPtr;
+		float *biaslweightsPtr;
+		float **arrayofweights;
+		float *outputlvectorPtr;
+};
 #endif
