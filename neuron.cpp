@@ -1,4 +1,4 @@
-#include "neuralnetwork.h"
+#include "neuron.h"
 #include <new>
 #include <cstddef>
 #include <iostream>
@@ -9,12 +9,12 @@ using namespace std;
 NeuronClass::NeuronClass()
 {
 
-	this->inputsnumber = 1;
+	this->inputsnumber = 10;
 
 	this->inputsweightsPtr = new (nothrow) float[this->inputsnumber];
 	if (inputsweightsPtr == NULL)
 	{
-		cout<<"Error creating weights, insufficient memory...";
+		cout<<"Error initializing weights in 0...";
 	};
 	for (int i = 0; i < this->inputsnumber; ++i)
 	{
@@ -24,7 +24,7 @@ NeuronClass::NeuronClass()
 	this->inputsvaluesPtr = new (nothrow) float[this->inputsnumber];
 	if (inputsvaluesPtr == NULL)
 	{
-		cout<<"Error creating inputs, insufficient memory...";
+		cout<<"Error initializing inputs in 0...";
 	};
 	for (int i = 0; i < this->inputsnumber; ++i)
 	{
@@ -44,7 +44,7 @@ NeuronClass::NeuronClass(int x, float *b, float c)
 	this->inputsweightsPtr = new (nothrow) float[x];
 	if (inputsweightsPtr == NULL)
 	{
-		cout<<"Error creating weights, insufficient memory...";
+		cout<<"Error initializing weights in 0...";
 	};
 	for (int i = 0; i < this->inputsnumber; ++i)
 	{
@@ -54,7 +54,7 @@ NeuronClass::NeuronClass(int x, float *b, float c)
 	this->inputsvaluesPtr = new (nothrow) float[this->inputsnumber];
 	if (inputsvaluesPtr == NULL)
 	{
-		cout<<"Error creating inputs, insufficient memory...";
+		cout<<"Error initializing inputs in 0...";
 	};
 	for (int i = 0; i < this->inputsnumber; ++i)
 	{
@@ -83,7 +83,7 @@ void NeuronClass::setInputsWeights(float *b)
 	this->inputsweightsPtr = new (nothrow) float[this->inputsnumber];
 	if (inputsweightsPtr == NULL)
 	{
-		cout<<"Error setting weights, insufficient memory...";
+		cout<<"Error setting weights...";
 	};
 	for (int i = 0; i < inputsnumber; ++i)
 	{
@@ -104,7 +104,7 @@ void NeuronClass::setInputsValues(float *b)
 	this->inputsvaluesPtr = new (nothrow) float[this->inputsnumber];
 	if (inputsvaluesPtr == NULL)
 	{
-		cout<<"Error setting inputs values, insufficient memory...";
+		cout<<"Error setting inputs values...";
 	};
 	for (int i = 0; i < this->inputsnumber; ++i)
 	{
@@ -140,68 +140,4 @@ void NeuronClass::getWeightsValues(float *k)
 	{
 		k[i]=this->inputsweightsPtr[i];
 	};
-}
-
-HLayerClass::HLayerClass()
-{
-	this->numberofneurons=1;
-	NeuronClass *neuron;
-	neuron =new(nothrow) NeuronClass[1];
-	if (neuron == NULL)
-	{
-		cout<<"Error creating neurons, insufficient memory...";
-	};
-
-	this->inputslnumbers=1;
-	this->inputlvectorPtr = new(nothrow) float[this->inputslnumbers];
-	if (inputlvectorPtr == NULL)
-	{
-		cout << "Error creating input vector, insufficient memory...";
-	};
-	for (int i = 0; i < this->inputslnumbers; ++i)
-	{
-		inputlvectorPtr[i]=0;
-	};
-	neuron->setInputsValues(this->inputlvectorPtr);
-
-	this->biaslweightsPtr = new(nothrow) float[this->numberofneurons];
-	if (this->biaslweightsPtr==NULL)
-	{
-		cout << "Error creating bias weights vector, insufficient memory";
-	};
-	for (int i = 0; i < this->numberofneurons; ++i)
-	{
-		this->biaslweightsPtr = 0;	
-	};
-	for (int i = 0; i < this->numberofneurons; ++i)
-	{
-		neuron[i].setBiasWeight(this->biaslweightsPtr[i]);
-	};
-
-	arrayofweights = new(nothrow) float*[this->inputslnumbers];
-	if (this->arrayofweights == NULL)
-	{
-		cout << "Error creating array of weights [1], insufficient memory";
-	};
-	for (int i = 0; i < this->inputslnumbers; ++i)
-	{
-		arrayofweights[i] = new(nothrow) float[this->numberofneurons];
-		if (this->arrayofweights[i] == NULL)
-		{
-			cout << "Error creating array of weights [2], insufficient memory";
-		};
-	};
-	for (int i = 0; i < this->numberofneurons; ++i)
-	{
-		for (int j = 0; j < this->inputslnumbers; ++j)
-		{
-			arrayofweights[j][i]=0;
-		};
-	};
-
-	for (int i = 0; i < this->numberofneurons; ++i)
-	{
-		this->outputlvectorPtr[i]=0;
-	};
-
 }
