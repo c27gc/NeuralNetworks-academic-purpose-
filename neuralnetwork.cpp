@@ -175,7 +175,7 @@ HLayerClass::HLayerClass()
 	};
 	for (int i = 0; i < this->numberofneurons; ++i)
 	{
-		neuron[i].setBiasWeight(this->biaslweightsPtr[i]);
+		this->neuron[i].setBiasWeight(this->biaslweightsPtr[i]);
 	};
 
 	arrayofweights = new(nothrow) float*[this->inputslnumbers];
@@ -249,7 +249,7 @@ HLayerClass::HLayerClass(int non, int iln, float *blw)
 	};
 	for (int i = 0; i < this->numberofneurons; ++i)
 	{
-		neuron[i].setBiasWeight(this->biaslweightsPtr[i]);
+		this->neuron[i].setBiasWeight(this->biaslweightsPtr[i]);
 	};
 
 	arrayofweights = new(nothrow) float*[this->inputslnumbers];
@@ -295,6 +295,11 @@ HLayerClass::~HLayerClass()
 	delete[] this->neuron;
 	delete[] this->inputlvectorPtr;
 	delete[] this->biaslweightsPtr;
+	
+	for (int i = 0; i < this->numberofneurons; ++i)
+	{
+		delete[] this->arrayofweights[i];
+	}
 	delete[] this->arrayofweights;
 	delete[] this->outputlvectorPtr;
 }
@@ -324,7 +329,7 @@ void HLayerClass::setLInputsValues(float *d)
 	{
 		inputlvectorPtr[i]=d[i];
 	};
-	neuron->setInputsValues(this->inputlvectorPtr);
+	this->neuron->setInputsValues(this->inputlvectorPtr);
 }
 
 void HLayerClass::setLBiasWeightsValues(float *k)
@@ -340,7 +345,7 @@ void HLayerClass::setLBiasWeightsValues(float *k)
 	};
 	for (int i = 0; i < this->numberofneurons; ++i)
 	{
-		neuron[i].setBiasWeight(this->biaslweightsPtr[i]);
+		this->neuron[i].setBiasWeight(this->biaslweightsPtr[i]);
 	};
 }
 
@@ -378,13 +383,31 @@ void HLayerClass::getLWeightsValues(float **e)
 	float aux[this->inputslnumbers];
 	for (int i = 0; i < this->numberofneurons; ++i)
 	{	
-		neuron[i].getWeightsValues(float aux);
+		this->neuron[i].getWeightsValues(aux);
 		for (int j = 0; j < this->inputslnumbers; ++j)
 		{
 			this->arrayofweights[j][i]=aux[j];
-			b[j][i]=this->arrayofweights[j][i];
+			e[j][i]=this->arrayofweights[j][i];
 		};
 	};
 }
 
-float getLIndividualWeightsValue(int nrn, int intp){return this->arrayofweights[intp-1][nrn-1]}
+float HLayerClass::getLIndividualWeightsValue(int nrn, int intp){return this->arrayofweights[intp][nrn];}
+
+void HLayerClass::lInformationSpread()
+{
+	for (int i = 0; i < numberofneurons; ++i)
+	{
+		this->neuron[i].informationSpread();
+	}
+}
+
+void HLayerClass::getLOutputsValues(float *c)
+{
+	for (int i = 0; i < numberofneurons; ++i)
+	{
+		c[i]=this->neuron[i].getOutputValue();
+	}
+}
+
+float HLayerClass::getLOutputIndividualValue(int ndn){return this->neuron[ndn].getOutputValue();}

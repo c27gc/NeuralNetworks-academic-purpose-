@@ -47,10 +47,10 @@ class HLayerClass
 		void getLBiasWeightsValues(float *k);
 		void setLWeightsValues(float **e);
 		void getLWeightsValues(float **e);
-		void getLIndividualWeightsValue(int nrn, int intp);
+		float getLIndividualWeightsValue(int nrn, int intp);
 		void lInformationSpread();
 		void getLOutputsValues(float *c);
-		int getLOutputsNumber();
+		float getLOutputIndividualValue(int ndn);
 
 	private:
 		int numberofneurons;
