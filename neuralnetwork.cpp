@@ -171,7 +171,7 @@ HLayerClass::HLayerClass()
 	};
 	for (int i = 0; i < this->numberofneurons; ++i)
 	{
-		this->biaslweightsPtr = 0;	
+		this->biaslweightsPtr[i] = 0;	
 	};
 	for (int i = 0; i < this->numberofneurons; ++i)
 	{
@@ -198,10 +198,157 @@ HLayerClass::HLayerClass()
 			arrayofweights[j][i]=0;
 		};
 	};
+	float aux[this->inputslnumbers];
+	for (int i = 0; i < this->numberofneurons; ++i)
+	{
+		for (int j = 0; j < this->inputslnumbers; ++j)
+		{
+			aux[j]=arrayofweights[j][i];
+		};
+		this->neuron[i].setInputsWeights(aux);
+	};
+
 
 	for (int i = 0; i < this->numberofneurons; ++i)
 	{
 		this->outputlvectorPtr[i]=0;
 	};
 
+}
+
+HLayerClass::HLayerClass(int non, int iln, float *blw)
+{
+	this->numberofneurons=non;
+	NeuronClass *neuron;
+	neuron =new(nothrow) NeuronClass[this->numberofneurons];
+	if (neuron == NULL)
+	{
+		cout<<"Error creating neurons, insufficient memory...";
+	};
+
+	this->inputslnumbers=iln;
+	this->inputlvectorPtr = new(nothrow) float[this->inputslnumbers];
+	if (inputlvectorPtr == NULL)
+	{
+		cout << "Error creating input vector, insufficient memory...";
+	};
+	for (int i = 0; i < this->inputslnumbers; ++i)
+	{
+		inputlvectorPtr[i]=0;
+	};
+	neuron->setInputsValues(this->inputlvectorPtr);
+
+	this->biaslweightsPtr = new(nothrow) float[this->numberofneurons];
+	if (this->biaslweightsPtr==NULL)
+	{
+		cout << "Error creating bias weights vector, insufficient memory";
+	};
+	for (int i = 0; i < this->numberofneurons; ++i)
+	{
+		this->biaslweightsPtr[i] = blw[i];	
+	};
+	for (int i = 0; i < this->numberofneurons; ++i)
+	{
+		neuron[i].setBiasWeight(this->biaslweightsPtr[i]);
+	};
+
+	arrayofweights = new(nothrow) float*[this->inputslnumbers];
+	if (this->arrayofweights == NULL)
+	{
+		cout << "Error creating array of weights [1], insufficient memory";
+	};
+	for (int i = 0; i < this->inputslnumbers; ++i)
+	{
+		arrayofweights[i] = new(nothrow) float[this->numberofneurons];
+		if (this->arrayofweights[i] == NULL)
+		{
+			cout << "Error creating array of weights [2], insufficient memory";
+		};
+	};
+	for (int i = 0; i < this->numberofneurons; ++i)
+	{
+		for (int j = 0; j < this->inputslnumbers; ++j)
+		{
+			arrayofweights[j][i]=0;
+		};
+	};
+	float aux[this->inputslnumbers];
+	for (int i = 0; i < this->numberofneurons; ++i)
+	{
+		for (int j = 0; j < this->inputslnumbers; ++j)
+		{
+			aux[j]=arrayofweights[j][i];
+		};
+		this->neuron[i].setInputsWeights(aux);
+	};
+
+
+	for (int i = 0; i < this->numberofneurons; ++i)
+	{
+		this->outputlvectorPtr[i]=0;
+	};
+
+}
+
+HLayerClass::~HLayerClass()
+{
+	delete[] this->neuron;
+	delete[] this->inputlvectorPtr;
+	delete[] this->biaslweightsPtr;
+	delete[] this->arrayofweights;
+	delete[] this->outputlvectorPtr;
+}
+
+void HLayerClass::setNumberOfNeurons(int a){this->numberofneurons=a;}
+
+void HLayerClass::createNeurons()
+{
+	NeuronClass *neuron;
+	neuron =new(nothrow) NeuronClass[this->numberofneurons];
+	if (neuron == NULL)
+	{
+		cout<<"Error creating neurons, insufficient memory...";
+	};
+}
+
+void HLayerClass::setLInputsNumbers(int b){this->inputslnumbers=b;}
+
+void HLayerClass::setLInputsValues(float *d)
+{
+	this->inputlvectorPtr = new(nothrow) float[this->inputslnumbers];
+	if (inputlvectorPtr == NULL)
+	{
+		cout << "Error creating input vector, insufficient memory...";
+	};
+	for (int i = 0; i < this->inputslnumbers; ++i)
+	{
+		inputlvectorPtr[i]=d[i];
+	};
+	neuron->setInputsValues(this->inputlvectorPtr);
+}
+
+void HLayerClass::setLBiasWeightsValues(float *k)
+{
+	this->biaslweightsPtr = new(nothrow) float[this->numberofneurons];
+	if (this->biaslweightsPtr==NULL)
+	{
+		cout << "Error creating bias weights vector, insufficient memory";
+	};
+	for (int i = 0; i < this->numberofneurons; ++i)
+	{
+		this->biaslweightsPtr[i] = k[i];	
+	};
+	for (int i = 0; i < this->numberofneurons; ++i)
+	{
+		neuron[i].setBiasWeight(this->biaslweightsPtr[i]);
+	};
+}
+
+void HLayerClass::getLBiasWeightsValues(float *k)
+{
+	for (int i = 0; i < this->numberofneurons; ++i)
+	{
+		this->biaslweightsPtr[i]=neuron[i].getBiasWeightValue();
+		k[i]=this->biaslweightsPtr[i];
+	};
 }
