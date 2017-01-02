@@ -352,3 +352,39 @@ void HLayerClass::getLBiasWeightsValues(float *k)
 		k[i]=this->biaslweightsPtr[i];
 	};
 }
+
+void HLayerClass::setLWeightsValues(float **e)
+{
+	for (int i = 0; i < this->numberofneurons; ++i)
+	{
+		for (int j = 0; j < this->inputslnumbers; ++j)
+		{
+			arrayofweights[j][i]=e[j][i];
+		};
+	};
+	float aux[this->inputslnumbers];
+	for (int i = 0; i < this->numberofneurons; ++i)
+	{
+		for (int j = 0; j < this->inputslnumbers; ++j)
+		{
+			aux[j]=arrayofweights[j][i];
+		};
+		this->neuron[i].setInputsWeights(aux);
+	};
+}
+
+void HLayerClass::getLWeightsValues(float **e)
+{	
+	float aux[this->inputslnumbers];
+	for (int i = 0; i < this->numberofneurons; ++i)
+	{	
+		neuron[i].getWeightsValues(float aux);
+		for (int j = 0; j < this->inputslnumbers; ++j)
+		{
+			this->arrayofweights[j][i]=aux[j];
+			b[j][i]=this->arrayofweights[j][i];
+		};
+	};
+}
+
+float getLIndividualWeightsValue(int nrn, int intp){return this->arrayofweights[intp-1][nrn-1]}
