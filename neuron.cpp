@@ -93,7 +93,8 @@ void NeuronClass::setInputsWeights(float *b)
 }
 
 void NeuronClass::setBiasWeight(float c)
-{
+{	
+	cout << "aqui llega: " << c << endl; 
 	this->biasweight=c;
 }
 

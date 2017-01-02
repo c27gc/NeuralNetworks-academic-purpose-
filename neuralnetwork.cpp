@@ -144,6 +144,7 @@ void NeuronClass::getWeightsValues(float *k)
 
 HLayerClass::HLayerClass()
 {
+	cout << "esto pasa dentro 1" <<endl;
 	this->numberofneurons=1;
 	NeuronClass *neuron;
 	neuron =new(nothrow) NeuronClass[1];
@@ -151,7 +152,7 @@ HLayerClass::HLayerClass()
 	{
 		cout<<"Error creating neurons, insufficient memory...";
 	};
-
+	cout << "esto pasa dentro 2" <<endl;
 	this->inputslnumbers=1;
 	this->inputlvectorPtr = new(nothrow) float[this->inputslnumbers];
 	if (inputlvectorPtr == NULL)
@@ -163,21 +164,27 @@ HLayerClass::HLayerClass()
 		inputlvectorPtr[i]=0;
 	};
 	neuron->setInputsValues(this->inputlvectorPtr);
-
+	cout << "esto pasa dentro 3" <<endl;
 	this->biaslweightsPtr = new(nothrow) float[this->numberofneurons];
 	if (this->biaslweightsPtr==NULL)
 	{
 		cout << "Error creating bias weights vector, insufficient memory";
 	};
+	cout << "esto pasa dentro 4" <<endl;
 	for (int i = 0; i < this->numberofneurons; ++i)
 	{
-		this->biaslweightsPtr[i] = 0;	
+		this->biaslweightsPtr[i] = 0;
+		cout << "biasweight[" << i << "]: " << 	biaslweightsPtr[i] << endl;
+		cout << "biasweight:" << neuron[i].getBiasWeightValue() << endl;
+		cout << "biasweight:" << neuron[1].getBiasWeightValue() << endl;
+		cout << "biasweight:" << neuron[2].getBiasWeightValue() << endl;
 	};
+	cout << "esto pasa dentro 5" <<endl;
 	for (int i = 0; i < this->numberofneurons; ++i)
-	{
-		this->neuron[i].setBiasWeight(this->biaslweightsPtr[i]);
+	{	
+		cout << "esto pasa dentro 6" <<endl;
+		neuron[i].biasweight=biaslweightsPtr[i];
 	};
-
 	arrayofweights = new(nothrow) float*[this->inputslnumbers];
 	if (this->arrayofweights == NULL)
 	{
@@ -308,6 +315,7 @@ void HLayerClass::setNumberOfNeurons(int a){this->numberofneurons=a;}
 
 void HLayerClass::createNeurons()
 {
+	delete[] this->neuron;
 	NeuronClass *neuron;
 	neuron =new(nothrow) NeuronClass[this->numberofneurons];
 	if (neuron == NULL)
@@ -316,10 +324,16 @@ void HLayerClass::createNeurons()
 	};
 }
 
-void HLayerClass::setLInputsNumbers(int b){this->inputslnumbers=b;}
+void HLayerClass::setLInputsNumbers(int b)
+{
+	this->inputslnumbers=b;
+	this->neuron->setInputsNumbers(b);
+	
+}
 
 void HLayerClass::setLInputsValues(float *d)
 {
+	delete[] this->inputlvectorPtr;
 	this->inputlvectorPtr = new(nothrow) float[this->inputslnumbers];
 	if (inputlvectorPtr == NULL)
 	{
@@ -334,6 +348,7 @@ void HLayerClass::setLInputsValues(float *d)
 
 void HLayerClass::setLBiasWeightsValues(float *k)
 {
+	delete[] this->biaslweightsPtr;
 	this->biaslweightsPtr = new(nothrow) float[this->numberofneurons];
 	if (this->biaslweightsPtr==NULL)
 	{
@@ -360,6 +375,12 @@ void HLayerClass::getLBiasWeightsValues(float *k)
 
 void HLayerClass::setLWeightsValues(float **e)
 {
+	for (int i = 0; i < this->numberofneurons; ++i)
+	{
+		delete[] this->arrayofweights[i];
+	}
+	delete[] this->arrayofweights;
+
 	for (int i = 0; i < this->numberofneurons; ++i)
 	{
 		for (int j = 0; j < this->inputslnumbers; ++j)
