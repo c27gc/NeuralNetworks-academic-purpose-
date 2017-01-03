@@ -18,12 +18,11 @@ class NeuronClass
 		int getInputsNumber();
 		float getBiasWeightValue();
 		void getWeightsValues(float *k);
-		float biasweight;
 	private:
 		int inputsnumber;
 		float *inputsweightsPtr;
 		float *inputsvaluesPtr;
-		
+		float *biasweight;
 		float outputvalue;
 };
 

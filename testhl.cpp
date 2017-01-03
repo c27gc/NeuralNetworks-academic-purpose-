@@ -6,15 +6,13 @@ using namespace std;
 
 int main(int argc, char const *argv[])
 {
-	cout << "esto pasa" << endl;
 	HLayerClass *Layer;
-	cout << "esto pasa2" << endl;
 	Layer = new(nothrow) HLayerClass[1];
-	if (Layer = NULL)
+	if (Layer == NULL)
 	{
 		cout << "Error creando Layer" << endl;
 	};
-	cout << "esto pasa3" << endl;
+	
 	Layer[0].setNumberOfNeurons(3);
 	Layer[0].createNeurons();
 	Layer[0].setLInputsNumbers(2);
@@ -63,14 +61,14 @@ int main(int argc, char const *argv[])
 	cout << "weights 1: " << endl;
 	for (int i = 0; i < 2; ++i)
 	{
-		for (int j = 0; j < 3; ++i)
-		{
-			weights[i][j]= weights[j][i] + 1;
-			cout << weights[i][j] << "   ";
-		}
+		for (int j = 0; j < 3; ++j)
+		{	
+			weights[i][j]=0.5;
+			cout << weights[i][j] << "   " ;
+		};
 		cout << endl;
 	};
-
+	cout << "aqui" << endl;
 	Layer[0].setLWeightsValues(weights);
 
 	float **weights2;
@@ -94,7 +92,7 @@ int main(int argc, char const *argv[])
 	cout << "weights 2: " << endl;
 	for (int i = 0; i < 2; ++i)
 	{
-		for (int j = 0; j < 3; ++i)
+		for (int j = 0; j < 3; ++j)
 		{
 			cout << weights2[i][j] << "   ";
 		}
@@ -114,7 +112,8 @@ int main(int argc, char const *argv[])
 	};
 
 	Layer[0].lInformationSpread();
-
+	Layer[0].getLOutputsValues(outputs);
+	cout << endl;
 	for (int i = 0; i < 3; ++i)
 	{
 		cout << "output[" << i << "] :" << outputs[i] << endl;
