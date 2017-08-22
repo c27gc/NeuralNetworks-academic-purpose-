@@ -1,11 +1,10 @@
 #ifndef neuron_H
 #define neuron_H
 //--------------------Class Definition--------------------//
-using namespace std;
 
 class NeuronClass
 {
-	public:	
+	public:
 		NeuronClass();
 		NeuronClass(int x, float *b, float c);
 		~NeuronClass();
@@ -31,7 +30,6 @@ class NeuronClass
 #ifndef hlayer_H
 #define hlayer_H
 
-using namespace std;
 
 class HLayerClass
 {
@@ -40,8 +38,10 @@ class HLayerClass
 		HLayerClass(int non, int iln, float *blw);
 		~HLayerClass();
 		void setNumberOfNeurons(int a);
+		int getNumberOfNeurons();
 		void createNeurons();
 		void setLInputsNumbers(int b);
+		void getLInputsNumbers();
 		void setLInputsValues(float *d);
 		void setLBiasWeightsValues(float *k);
 		void getLBiasWeightsValues(float *k);
@@ -56,9 +56,42 @@ class HLayerClass
 		int numberofneurons;
 		NeuronClass *neuron;
 		int inputslnumbers;
+		int auxinputslnumbers;
 		float *inputlvectorPtr;
 		float *biaslweightsPtr;
 		float **arrayofweights;
 		float *outputlvectorPtr;
 };
+#endif
+
+#ifndef network_H
+#define network_H
+
+class NetworkClass
+{
+	public:
+		NetworkClass();
+		NetworkClass(int nol, int *nonpl);
+		~NetworkClass();
+		void setNumberOfLayers(int t);
+		void setNumberOfNeuronsPerLayer(int *f);
+		void setInputsNValues(int *g);
+		void setNWeightsValues(int ***we);
+		//void backpropagationlearning();
+		void nInformationSpread();
+	private:
+		bool aux1 = true;
+		bool aux2 = false;
+		int numberoflayers;
+		int numberoflayersaux;
+		HLayerClass *layer;
+		int *numberofneuronsperlayerPtr;
+		int numberofoutputs;
+		float *desiredoutputsvaluesPtr;
+		int numberofinputs;
+		float *inputsnvaluesPtr;
+		float *outputsnvaluesPtr;
+		float ***arrayNofweights;
+};
+
 #endif
