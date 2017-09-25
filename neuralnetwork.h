@@ -80,12 +80,14 @@ class NetworkClass
 		//void backpropagationlearning();
 		void nInformationSpread();
 	private:
-		bool aux1 = true;
+		bool aux1 = false;
 		bool aux2 = false;
+		bool aux3 = false;
 		int numberoflayers;
 		int numberoflayersaux;
 		HLayerClass *layer;
 		int *numberofneuronsperlayerPtr;
+		int *numberofneuronsperlayerPtrAux;
 		int numberofoutputs;
 		float *desiredoutputsvaluesPtr;
 		int numberofinputs;

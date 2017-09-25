@@ -507,7 +507,7 @@ NetworkClass::NetworkClass()
 		this->outputsnvaluesPtr[i]=0;
 	};
 
-	aux1=false;
+	aux1=true;
 }
 
 NetworkClass::NetworkClass(int nol, int *nonpl)
@@ -557,7 +557,7 @@ NetworkClass::NetworkClass(int nol, int *nonpl)
 		cout << "Error setting inputs values" << endl;
 	};
 	for (int i = 0; i < numberofinputs; i++) {
-		this->inputsnvaluesPtr[i]=0;
+		this->inputsnvaluesPtr[i]=0;  //POR QUE EN 0
 	};
 	layer[0].setLInputsValues(this->inputsnvaluesPtr);
 
@@ -594,7 +594,7 @@ NetworkClass::NetworkClass(int nol, int *nonpl)
 	for (int i = 0; i < this->numberofoutputs; i++) {
 		this->outputsnvaluesPtr[i]=0;
 	};*/
-
+	aux2=true;
 }
 
 NetworkClass::~NetworkClass()
@@ -622,16 +622,21 @@ void NetworkClass::setNumberOfLayers(int t)
 {
 	this->numberoflayersaux=this->numberoflayers;
 	this->numberoflayers=t;
-	if (!aux1) {
-		aux1 = true;
-	};
-	aux2 = true;
+	aux1 = true;
+	aux2 = false;
+	aux3 = true;
 }
 
 void NetworkClass::setNumberOfNeuronsPerLayer(int *f)
 {
-	delete[] this->numberofneuronsperlayerPtr;
+	delete[] this->numberofneuronsperlayerPtrAux;
+	if (aux3) {
+		/* code */
+	}else {
+		/* code */
+	};
 
+	delete[] this->numberofneuronsperlayerPtr;
 	this->numberofneuronsperlayerPtr = new(nothrow) int[this->numberoflayers];
 	if (this->numberofneuronsperlayerPtr == NULL) {
 		cout << "Error creating layers." << endl;
@@ -639,11 +644,14 @@ void NetworkClass::setNumberOfNeuronsPerLayer(int *f)
 	for (size_t i = 0; i < this->numberoflayers; i++) {
 		this->numberofneuronsperlayerPtr[i]=f[i];
 		if (i > 0) {
-			layer[i-1].setNumberOfNeurons(f[i]);
+			layer[i-1].setNumberOfNeurons(f[i]); //AQUI POSIBLE ERROR SI F NO COINCIDE CON #LAYERs
 		};
 	};
 	this->numberofoutputs = this->numberofneuronsperlayerPtr[this->numberoflayers - 1];
 	this->numberofinputs = this->numberofneuronsperlayerPtr[0];
+	aux1 = true;
+	aux2 = false;
+	aux3 = false;
 }
 
 void NetworkClass::setInputsNValues(int *g)
@@ -655,7 +663,7 @@ void NetworkClass::setInputsNValues(int *g)
 		cout << "Error setting inputs values" << endl;
 	};
 	for (int i = 0; i < numberofinputs; i++) {
-		this->inputsnvaluesPtr[i]=g[i];
+		this->inputsnvaluesPtr[i]=g[i]; //AQUI POSIBLE ERROR SI LOS TAMAÑOS NO COINCIDEN
 	};
 	layer[0].setLInputsValues(g);
 }
@@ -669,11 +677,18 @@ void NetworkClass::setNWeightsValues(int ***we)
 			};
 			delete[] this->arrayNofweights[i];
 		};
+		aux1 = false;
 	};
 
 	if (aux2) {
-		/* code */
-	}
+		for (size_t i = 0; i < (this- >numberoflayers - 1); i++) {
+			for (size_t j = 0; j < this->numberofneuronsperlayerPtr[i]; j++) {
+				delete[] this->arrayNofweights[i][j];
+			};
+			delete[] this->arrayNofweights[i];
+		};
+		aux2 = false;
+	};
 
 	arrayNofweights = new(nothrow) float**[(this->numberoflayers - 1)];
 	if (arrayNofweights == NULL)
