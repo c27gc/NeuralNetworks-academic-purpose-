@@ -506,7 +506,16 @@ NetworkClass::NetworkClass()
 	for (int i = 0; i < this->numberofoutputs; i++) {
 		this->outputsnvaluesPtr[i]=0;
 	};
-
+	//============================================================================
+	this->numberoflayersAux=this->numberoflayers;
+	this->numberofneuronsperlayerPtrAux = new(nothrow) int[this->numberoflayersAux];
+	if (this->numberofneuronsperlayerPtr == NULL) {
+		cout << "Error creating layers." << endl;
+	};
+	for (size_t i = 0; i < this->numberoflayersAux; i++) {
+		this->numberofneuronsperlayerPtrAux[i]=this->numberofneuronsperlayerPtr[i];
+	};
+	//============================================================================
 	aux1=true;
 }
 
@@ -594,6 +603,16 @@ NetworkClass::NetworkClass(int nol, int *nonpl)
 	for (int i = 0; i < this->numberofoutputs; i++) {
 		this->outputsnvaluesPtr[i]=0;
 	};*/
+	//============================================================================
+	this->numberoflayersAux=this->numberoflayers;
+	this->numberofneuronsperlayerPtrAux = new(nothrow) int[this->numberoflayersAux];
+	if (this->numberofneuronsperlayerPtr == NULL) {
+		cout << "Error creating layers." << endl;
+	};
+	for (size_t i = 0; i < this->numberoflayersAux; i++) {
+		this->numberofneuronsperlayerPtrAux[i]=this->numberofneuronsperlayerPtr[i];
+	};
+	//============================================================================
 	aux2=true;
 }
 
@@ -620,20 +639,22 @@ NetworkClass::~NetworkClass()
 
 void NetworkClass::setNumberOfLayers(int t)
 {
-	this->numberoflayersaux=this->numberoflayers;
+	this->numberoflayersAux=this->numberoflayers;
 	this->numberoflayers=t;
 	aux1 = true;
 	aux2 = false;
-	aux3 = true;
 }
 
 void NetworkClass::setNumberOfNeuronsPerLayer(int *f)
 {
+
 	delete[] this->numberofneuronsperlayerPtrAux;
-	if (aux3) {
-		/* code */
-	}else {
-		/* code */
+	this->numberofneuronsperlayerPtrAux = new(nothrow) int[this->numberoflayersAux];
+	if (this->numberofneuronsperlayerPtr == NULL) {
+		cout << "Error creating layers." << endl;
+	};
+	for (size_t i = 0; i < this->numberoflayersAux; i++) {
+		this->numberofneuronsperlayerPtrAux[i]=this->numberofneuronsperlayerPtr[i];
 	};
 
 	delete[] this->numberofneuronsperlayerPtr;
@@ -651,7 +672,6 @@ void NetworkClass::setNumberOfNeuronsPerLayer(int *f)
 	this->numberofinputs = this->numberofneuronsperlayerPtr[0];
 	aux1 = true;
 	aux2 = false;
-	aux3 = false;
 }
 
 void NetworkClass::setInputsNValues(int *g)
@@ -671,8 +691,8 @@ void NetworkClass::setInputsNValues(int *g)
 void NetworkClass::setNWeightsValues(int ***we)
 {
 	if (aux1) {
-		for (size_t i = 0; i < (this->numberoflayers - 1); i++) {
-			for (size_t j = 0; j < this->numberofneuronsperlayerPtr[i]; j++) {
+		for (size_t i = 0; i < (this->numberoflayersAux - 1); i++) {
+			for (size_t j = 0; j < this->numberofneuronsperlayerPtrAux[i]; j++) {
 				delete[] this->arrayNofweights[i][j];
 			};
 			delete[] this->arrayNofweights[i];
@@ -681,13 +701,12 @@ void NetworkClass::setNWeightsValues(int ***we)
 	};
 
 	if (aux2) {
-		for (size_t i = 0; i < (this- >numberoflayers - 1); i++) {
+		for (size_t i = 0; i < (this->numberoflayers - 1); i++) {
 			for (size_t j = 0; j < this->numberofneuronsperlayerPtr[i]; j++) {
 				delete[] this->arrayNofweights[i][j];
 			};
 			delete[] this->arrayNofweights[i];
 		};
-		aux2 = false;
 	};
 
 	arrayNofweights = new(nothrow) float**[(this->numberoflayers - 1)];

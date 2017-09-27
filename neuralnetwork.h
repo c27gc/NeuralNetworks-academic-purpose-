@@ -82,9 +82,8 @@ class NetworkClass
 	private:
 		bool aux1 = false;
 		bool aux2 = false;
-		bool aux3 = false;
 		int numberoflayers;
-		int numberoflayersaux;
+		int numberoflayersAux;
 		HLayerClass *layer;
 		int *numberofneuronsperlayerPtr;
 		int *numberofneuronsperlayerPtrAux;
