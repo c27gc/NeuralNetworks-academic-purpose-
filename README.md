@@ -1,2 +1,2 @@
 # NeuralNetworks
-(Prototype in development). Framework for the development of applications based on neural networks
+(Prototype in development). Orion is an emulation of Keras based on Theano. Orion has academic purposes, in particular it aims to instruct in neural network modeling with python.
