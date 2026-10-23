@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lecture-notes-neural-networks"
+version = "0.2.0"
+description = "Train, inspect, and visualize neural networks from first principles"
+requires-python = ">=3.9"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["lecture_nn*"]
+
+[tool.setuptools.package-data]
+lecture_nn = ["static/*.html"]
+
+[project.scripts]
+lecture-nn = "lecture_nn.__main__:main"

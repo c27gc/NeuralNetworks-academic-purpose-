@@ -1,0 +1,49 @@
+name: Neural network tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Test mathematics, training, persistence, and laboratory
+        run: PYTHONPATH=python python -m unittest discover -s python/tests -t . -v
+      - name: Exercise the command line
+        run: PYTHONPATH=python python -m lecture_nn train --dataset circles --epochs 120
+      - name: Verify package installation
+        run: |
+          python -m pip install ./python
+          lecture-nn --help
+          cd /tmp
+          python -c "from importlib.resources import files; assert files('lecture_nn').joinpath('static/lab.html').is_file()"
+
+  cpp:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        build_type: [Debug, Release]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Configure
+        run: cmake -S cpp -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+      - name: Build
+        run: cmake --build build --parallel
+      - name: Test gradients, contracts, regression, and XOR convergence
+        run: ctest --test-dir build --output-on-failure
+      - name: Compare Python and C++ inference, SGD, and Adam
+        run: LECTURE_NN_CPP="$PWD/build/lecture_nn_model" PYTHONPATH=python python -m unittest python.tests.test_interop -v

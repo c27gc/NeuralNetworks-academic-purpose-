@@ -1,0 +1,18 @@
+# Local Python state
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+
+# CMake output
+build/
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+CTestTestfile.cmake
+Makefile
+install_manifest.txt
+
+# macOS/editor state
+.DS_Store
+.vscode/
